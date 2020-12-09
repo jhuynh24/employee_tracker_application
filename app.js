@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const { waitForDebugger } = require("inspector");
 const mysql = require("mysql");
 require ("console.table");
 var connection = mysql.createConnection({
@@ -14,7 +15,8 @@ var connection = mysql.createConnection({
     password: "Fghfgh77",
     database: "employeedb"
   });
-  
+//   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve,delay));
+
   connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
@@ -106,7 +108,6 @@ function addDepartment() {
             function(err, res) {
               if (err) throw err;
               console.log(res.affectedRows + " department inserted!\n");
-              // Call updateProduct AFTER the INSERT completes
               mainMenu();
             }
           );
@@ -153,7 +154,6 @@ function addRole() {
             function(err, res) {
               if (err) throw err;
               console.log(res.affectedRows + " role inserted!\n");
-              // Call updateProduct AFTER the INSERT completes
               mainMenu();
             }
           );
@@ -217,7 +217,6 @@ for (var i = 0; i < res.length; i++) {
             function(err, res) {
               if (err) throw err;
               console.log(res.affectedRows + " employee inserted!\n");
-              // Call updateProduct AFTER the INSERT completes
               mainMenu();
             }
           );
@@ -257,10 +256,7 @@ function viewEmployee() {
 
        
 function updateEmployeeRole() {
-    //let employees = getEmployees();
-    let employees = [{
-        value: 1, name: "1"
-    },{value:2, name: "2"}];
+    let employees = [];
     connection.query("SELECT * FROM employee", function(err, res) {
         if (err) throw err;
     for (var i = 0; i < res.length; i++) {
@@ -268,9 +264,7 @@ function updateEmployeeRole() {
             value: res[i].id, name: res[i].first_name + res[i].last_name
         });
     }
-    console.log(employees);
 })
-console.log(employees);
     let roles = [];
     connection.query("SELECT * FROM role", function(err, res) {
         if (err) throw err;
@@ -281,6 +275,11 @@ console.log(employees);
     }
 })
 inquirer.prompt([
+    {
+        type: "input",
+        name: "updaterName",
+        message: "What is your name?"
+    },
     {
         type: "list",
         name: "employeeId",
@@ -299,24 +298,10 @@ inquirer.prompt([
         [{role_id: answers.roleId}, {id: answers.employeeId}], 
         function(err, res) {
           if (err) throw err;
-          console.log(res.affectedRows + " employee inserted!\n");
-          // Call updateProduct AFTER the INSERT completes
+          console.log(answers.updaterName + " updated " + res.affectedRows + " employee!\n");
           mainMenu();
         }
       );
     
 })
 }
-
-// function getEmployees() {
-//     var employees = [];
-//     connection.query("SELECT * FROM employee", function(err, res) {
-//         if (err) throw err;
-//     for (var i = 0; i < res.length; i++) {
-//         employees.push({
-//             value: res[i].id, name: res[i].first_name + res[i].last_name
-//         });
-//     }
-// })
-// return employees;
-// }
