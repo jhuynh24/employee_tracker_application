@@ -1,1 +1,3 @@
 # employee_tracker_application
+
+For this assignment, I created a command line application for tracking employees within a company database. This applications allows user to input names, ID's, roles, salary, ect. in order create a repository of employee's and their information. The user will run the application by typing into the terminal "node app.js". Then they will be prompted on what action they would like to take (add, view, or update). The arrow keys can be used to scroll to the desired option and the enter key will select the highlighted option. Once the user inputs all the information into the desired field, the application will log the data into the database and it will be saved for future viewing.
